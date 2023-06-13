@@ -14,9 +14,12 @@ public class noteGeneratorScript : MonoBehaviour
     int oldBeat = 0;
     bool onPlay = false;
     float musicCounbter = 0;
+    public GameObject notesIcon;
+
+    int noteCount = 1;
     void Awake()
     {
-        Application.targetFrameRate = 120;
+        Application.targetFrameRate = 60;
         csvFile = Resources.Load("Csvs/asatogotsu") as TextAsset;
         StringReader reader = new StringReader(csvFile.text);
 
@@ -25,15 +28,13 @@ public class noteGeneratorScript : MonoBehaviour
             string line = reader.ReadLine();
             csvDatas.Add(line.Split(','));
         }
-        //beat = float.Parse(csvDatas[0][4]);//beat開始ディレイ
-        musicMP3 = Resources.Load("Sounds/" + csvDatas[0][0]) as AudioClip;//曲データ
-        Debug.Log(csvDatas[0][3]);//bpm
     }
 
     void Start()
     {
-
-
+        //beat = float.Parse(csvDatas[0][4]);//beat開始ディレイ
+        musicMP3 = Resources.Load("Sounds/" + csvDatas[0][0]) as AudioClip;//曲データ
+        Debug.Log(csvDatas[0][3]);//bpm
     }
 
 
@@ -43,27 +44,37 @@ public class noteGeneratorScript : MonoBehaviour
 
         if (onPlay)
         {
-            if (musicCounbter == 0) Invoke("MusicStart",float.Parse(csvDatas[0][4]));
+            if (musicCounbter == 0) Invoke("MusicStart", float.Parse(csvDatas[0][4]));
 
 
             musicCounbter += Time.deltaTime;
             beat = (int)(musicCounbter / (60 / float.Parse(csvDatas[0][3])));
             Debug.Log(beat);
+
+            if (beat + "" == csvDatas[noteCount][0])
+            {
+                Instantiate(
+            notesIcon, new Vector3(0, 5, 0), Quaternion.identity);
+            noteCount++;
+            }
+
+
+
+
             if (beat != oldBeat)
             {
                 AS.PlayOneShot(beatSE);
             }
-
             oldBeat = beat;
-
         }
 
     }
 
-void MusicStart(){
+    void MusicStart()
+    {
 
-AS.PlayOneShot(musicMP3);
-}
+        AS.PlayOneShot(musicMP3);
+    }
 
 
 
