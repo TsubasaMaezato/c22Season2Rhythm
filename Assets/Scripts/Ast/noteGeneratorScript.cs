@@ -7,10 +7,11 @@ public class noteGeneratorScript : MonoBehaviour
 {
     TextAsset csvFile;
     public List<string[]> csvDatas = new List<string[]>();
-    public AudioSource AS;
+    public AudioSource seAS;
+    public AudioSource bgmAS;
     public AudioClip beatSE;
     AudioClip musicMP3;
-    int beat = 0;
+    float beat = 0;
     int oldBeat = 0;
     bool onPlay = false;
     float musicCounbter = 0;
@@ -40,7 +41,7 @@ public class noteGeneratorScript : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetButtonDown("Jump")) onPlay = true;
+        if (Input.GetButtonDown("Fire1")) onPlay = true;
 
         if (onPlay)
         {
@@ -48,32 +49,54 @@ public class noteGeneratorScript : MonoBehaviour
 
 
             musicCounbter += Time.deltaTime;
-            beat = (int)(musicCounbter / (60 / float.Parse(csvDatas[0][3])));
-            Debug.Log(beat);
+            beat = musicCounbter / (60 / float.Parse(csvDatas[0][3]));
+            //Debug.Log(beat);
 
-            if (beat + "" == csvDatas[noteCount][0])
+            // csvDatas[noteCount][0] noteCount行に入っているnBeat
+            // csvDatas[noteCount][1] 1 n.0  2 n.25  3 n.5  4 1.75
+            float noteBeat;
+            switch ((int)float.Parse(csvDatas[noteCount][1]))
+            {
+                case 1:
+                    noteBeat = float.Parse(csvDatas[noteCount][0] + ".0");
+                    break;
+                case 2:
+                    noteBeat = float.Parse(csvDatas[noteCount][0] + ".25");
+                    break;
+                case 3:
+                    noteBeat = float.Parse(csvDatas[noteCount][0] + ".5");
+                    break;
+                case 4:
+                    noteBeat = float.Parse(csvDatas[noteCount][0] + ".75");
+                    break;
+                default:
+                    noteBeat = float.Parse(csvDatas[noteCount][0] + ".0");
+                    break;
+            }
+
+            Debug.Log(beat + " : " + noteBeat);
+            if (beat >= noteBeat)
             {
                 Instantiate(
             notesIcon, new Vector3(0, 5, 0), Quaternion.identity);
-            noteCount++;
+                noteCount++;//行数のカウント
             }
 
 
+            /// /2 /4 /8 beat
 
-
-            if (beat != oldBeat)
+            if ((int)beat != oldBeat)
             {
-                AS.PlayOneShot(beatSE);
+                seAS.PlayOneShot(beatSE);
             }
-            oldBeat = beat;
+            oldBeat = (int)beat;
         }
-
     }
 
     void MusicStart()
     {
 
-        AS.PlayOneShot(musicMP3);
+        bgmAS.PlayOneShot(musicMP3);
     }
 
 

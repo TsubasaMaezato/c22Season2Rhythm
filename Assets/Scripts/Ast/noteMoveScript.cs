@@ -4,13 +4,15 @@ using UnityEngine;
 
 public class noteMoveScript : MonoBehaviour
 {
+    public float noteSpeed;
     void Start()
     {
-        
+        Destroy(gameObject, 3);
     }
 
     void Update()
     {
-        transform.Translate(0,-0.1f,0);
+        //fps60
+        transform.Translate(0, noteSpeed * -1 * Time.deltaTime * 60, 0);
     }
 }
