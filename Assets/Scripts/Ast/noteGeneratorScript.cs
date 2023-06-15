@@ -16,6 +16,7 @@ public class noteGeneratorScript : MonoBehaviour
     bool onPlay = false;
     float musicCounbter = 0;
     public GameObject notesIcon;
+    public noteMoveScript nMS;
 
     int noteCount = 1;
     void Awake()
@@ -74,7 +75,7 @@ public class noteGeneratorScript : MonoBehaviour
                     break;
             }
 
-            Debug.Log(beat + " : " + noteBeat);
+            //Debug.Log(beat + " : " + noteBeat);
             if (beat >= noteBeat)
             {
                 float noteX = -1.8f;
@@ -82,6 +83,7 @@ public class noteGeneratorScript : MonoBehaviour
                 {
                     if (csvDatas[noteCount][i] == "1")
                     {
+                        nMS.myLane=i-1;
                         Instantiate(
                     notesIcon,
                     new Vector3(noteX, 5, 0),

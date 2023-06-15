@@ -97,4 +97,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 05f54cea85e560f47aaba5d51a66efc4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  noteSpeed: 0.2
+  noteSpeed: 0.1
+  myLane: 3
+  hitArea: -2
+  justArea: -3
+  slowArea: -4
+  missrea: -5
