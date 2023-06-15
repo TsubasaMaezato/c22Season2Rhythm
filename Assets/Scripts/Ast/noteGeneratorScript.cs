@@ -77,13 +77,20 @@ public class noteGeneratorScript : MonoBehaviour
             Debug.Log(beat + " : " + noteBeat);
             if (beat >= noteBeat)
             {
-                Instantiate(
-            notesIcon, new Vector3(0, 5, 0), Quaternion.identity);
+                float noteX = -1.8f;
+                for (int i = 2; i <= 4; i++)
+                {
+                    if (csvDatas[noteCount][i] == "1")
+                    {
+                        Instantiate(
+                    notesIcon,
+                    new Vector3(noteX, 5, 0),
+                    Quaternion.identity);//2,3,4が1ならレーンにノーツ出す
+                    }
+                    noteX += 1.8f;
+                }
                 noteCount++;//行数のカウント
             }
-
-
-            /// /2 /4 /8 beat
 
             if ((int)beat != oldBeat)
             {
